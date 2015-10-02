@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+    }
+    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'appengine'
+
+retrolambda {
+    defaultMethods false
+    incremental false
+    jvmArgs '-noverify'
+}
+
+dependencies {
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
+    compile 'com.google.appengine:appengine-endpoints:1.9.18'
+    compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
+    compile 'javax.servlet:servlet-api:2.5'
+}
+
+appengine {
+    downloadSdk = true
+    endpoints {
+        getClientLibsOnBuild = true
+    }
+}
